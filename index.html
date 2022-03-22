@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://use.fontawesome.com/cfaaabfea7.js"></script>
+        <link rel="stylesheet" href="css/allYourSiteAreCascadeFromUs.css">
+        <title></title>
+    </head>
+    <body>
+        <header id="header">
+            <div id="headerContent">
+                <h1>jP.js</h1>
+                <h3>Welcome to my Playground!</h3>
+            </div>
+        </header>
+        <nav id="navigation">
+            <ul id="links">
+                <li>
+                    <a href="index.html" class="current">jP.js Generic Playground</a>
+                </li>
+                <li>
+                    <a href="GenericBlockGameDeluxe.html">Generic Block Game Deluxe</a>
+                </li>
+                <li>
+                    <a href="GenericSnakeGameDeluxe.html">Generic Snake Game Deluxe</a>
+                </li>
+                <li>
+                    <a href="GenericWordScrambleDeluxe.html">Generic Word Scramble Deluxe</a>
+                </li>
+            </ul>
+        </nav>
+        <article id="content">
+            <figure class="slider">
+                <img id="sliderImg" src="" alt="" >
+                <figcaption id="sliderIndicators"></figcaption>
+                <figcaption id="sliderAlt"></figcaption>
+            </figure>
+            <script src="js/simpleSlider.js"></script>
+            <script>
+                sources = [];
+                sources.push({src:"media/comingSoon1.jpg", alt:"Generic Block Game"});
+                sources.push({src:"media/comingSoon2.jpg", alt:"Generic Snake Game"});
+                sources.push({src:"media/comingSoon3.jpg", alt:"Generic Word Scramble"});
+                initSlider(sources,3000, true);
+            </script>
+            <p></p>
+        </article>
+        <script>
+        </script>
+    </body>
+</html>

@@ -1,0 +1,155 @@
+:root
+{
+    --main-bg-color: black;
+    --secondary-bg-color: rgb(121, 120, 120);
+    --main-fg-color: antiquewhite;
+    --secondary-fg-color: lawngreen;
+    --accent-color-1: green;
+}
+@font-face {
+    font-family: outrunFuture;
+    src: url(../fonts/Outrun_future.otf);
+}
+@font-face {
+    font-family: computerPixel;
+    src: url(../fonts/computer_pixel-7.ttf);
+}
+*
+{
+    box-sizing: border-box;
+}
+
+nav ul li a:visited.current, nav ul li a:visited.current
+{
+    color: var(--secondary-fg-color);
+}
+nav ul li a:visited, nav ul li a:visited
+{
+    color: var(--main-fg-color);
+}
+nav ul li a
+{
+    text-decoration: none;
+    font-size: 1.3em;
+    width: 100%;
+}
+nav ul
+{
+    width: 100%;
+    list-style: none;
+}
+nav ul li
+{
+    padding-top: 10px;
+    text-align: center;  
+    width: 100%; 
+}
+nav 
+{
+    background-color: var(--secondary-bg-color);
+    border: 15px solid var(--accent-color-1); 
+    width: 22.5%; 
+    margin-right: 1.5%;
+    float: left;
+}
+
+header
+{
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    overflow: hidden;
+    float: left;
+    background-color: var(--secondary-bg-color);
+    border: 15px solid var(--accent-color-1);  
+}
+header h1, header h3
+{
+    font-family: outrunFuture;
+    margin: 0px;
+    overflow: hidden;   
+}
+#headerContent
+{
+    animation: ifYouCantDance 5s infinite; 
+    overflow: hidden;   
+}
+@keyframes ifYouCantDance {
+    0%
+    {
+        transform: translateX(-100px);
+    }
+    50%
+    {
+        transform: translateX(100px);
+    }
+    100%
+    {
+        transform: translateX(-100px);
+    }
+}
+article
+{
+    float: left;
+    width: 75%;
+    margin: 0;
+}
+body
+{
+    background-color: var(--main-bg-color);
+    color: var(--main-fg-color);
+    font-family: computerPixel;
+}
+figure img
+{
+    width: 40%;
+    margin-left: 30%;
+}
+figure
+{
+    border: 15px solid var(--accent-color-1);
+}
+figcaption
+{
+    text-align: center;
+}
+
+
+canvas
+{
+    float: left;
+    border: 15px solid var(--accent-color-1);
+}
+.gameInfo
+{
+    float: none;
+    overflow: hidden;
+}
+.gameControls
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    margin-left: 15px;
+    background-color: var(--secondary-bg-color);
+    border: 15px solid var(--accent-color-1);  
+}
+.gameControls span
+{
+    padding: 20px;
+}
+.gameControls span:hover
+{
+    background-color: var(--secondary-fg-color);
+    animation: ease-in-out 4s;
+}
+.gameDescription
+{
+    padding: 10px;
+    font-size: 1.25em;
+    margin-left: 15px;
+    background-color: var(--secondary-bg-color);
+    border: 15px solid var(--accent-color-1);  
+}

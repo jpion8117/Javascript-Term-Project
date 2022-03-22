@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="js/populateUniversalElements.js"></script>
+        <script src="https://use.fontawesome.com/cfaaabfea7.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="css/allYourSiteAreCascadeFromUs.css">
+        <title></title>
+        <style>
+            .MovableLetter
+            {
+               border: solid;
+               height: 5em;
+               text-align: center;
+               line-height: 5em;
+            }
+            #letters, #wordBuilder{
+               display:flex;
+                flex-wrap:wrap;
+              }
+              @media only screen and (max-width: 425px)
+              {
+                  p
+                  {
+                      flex: 2;
+                  }
+              }
+              p{
+                  flex: 1;
+                  width:10%;
+              }
+              #wordBuilder
+              {
+                  background-color: var(--secondary-bg-color);
+                  width: 100%;
+                  height: 6em;
+              }
+         </style>
+    </head>
+    <body>
+        <header id="header">
+        </header>
+        <nav id="navigation">
+        </nav>
+        <article id="content">
+  <section id="letters">
+                <p class="MovableLetter"></p>
+                <p class="MovableLetter"></p>
+                <p class="MovableLetter"></p>
+                <p class="MovableLetter"></p>
+                <p class="MovableLetter"></p>
+                <p class="MovableLetter"></p>
+                <p class="MovableLetter"></p>
+                <p class="MovableLetter"></p>
+                <p class="MovableLetter"></p>
+                <p class="MovableLetter"></p>
+  </section>
+  <section id="wordBuilder"></section>
+  <section id="completeWords"></section>
+        </article>
+        <script src="js/wordScramble.js"></script>
+    </body>
+</html>
