@@ -14,18 +14,42 @@
         <nav id="navigation">
         </nav>
         <article id="content">
-            <canvas id="" width = 450 height="300"></canvas>
+            <canvas id="nokiaEmulator9001" width = 450 height="300"></canvas>
             <div class="gameInfo">
-                <p class="gameControls">
-                    <span class="fa fa-border fa-2x fa-arrow-left"></span>
-                    <span class="fa fa-border fa-2x fa-arrow-right"></span>
-                </p>
-                <p class="gameDescription">
+                <form id="settings" class="gameControls">
+                    <h2>Settings</h2>
+                    <hr>
+                    <h3>Player Selection</h3>
+                    <input type="radio" name="player" id="player" checked> Larry
+                    <input type="radio" name="player" id="player"> Curley
+                    <input type="radio" name="player" id="player"> Moe
+                    <br>
+                    <h3>Color Selection</h3>
+                    <input type="radio" name="color" id="color" checked> Red
+                    <input type="radio" name="color" id="color"> Blue
+                    <input type="radio" name="color" id="color"> Green
+                    <input type="radio" name="color" id="color"> Yellow
+                    <input type="radio" name="color" id="color"> Aqua
+                    <br>
+                    <hr>
+                    <br>
+                    <button type="submit" id="start">Start Game</button>
+                </form>
+
+                <div>
+                    <output id="GameScore"></output>
+                </div>
+                <div class="gameDescription">
                     Age test! Who remembers the Nokia phones... Anyone?? Ok, well on many early phones there
                     was a game called "snake" where you guide a snake around the screen to collect food without
                     running into yourself or a wall. That's it... Enjoy...
-                </p>
+                </div>
             </div>
         </article>
+        <script src="js/jpsCanvasGameUtilities_v2.js"></script>
+        <script src="js/snake.js"></script>
+        <script>
+            //for testing purposes only
+        </script>
     </body>
 </html>
