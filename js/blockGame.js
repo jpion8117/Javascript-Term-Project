@@ -53,7 +53,7 @@ class BlockPiece extends GameFGObject
         options.updateFrame = function()
         {
             //dont process any piece that's not visible or is already "dead"
-            if(!this.visible || this.type === "deadBlockPiece")
+            if(!this.visible || this.outOfFrame)
                 return;
 
             //check if block piece is in grid
@@ -111,9 +111,23 @@ class GameGrid extends GameFGObject
     static BASE_POINTS_2_LINES = 50;
     static BASE_POINTS_3_LINES = 150;
     static BASE_POINTS_4_LINES = 600;
-    static NUM_OF_LINES = 13;
+    static NUM_OF_LINES = 16;
     lineCheckers = [];
     gridBlocks = [];
+    dropLZ = new GameFGObject(blockGame, 200, 40, 40, 40, 
+        {
+            drawFrame:function(){},
+            updateFrame: function()
+            {
+                for(let i = 0; i < this.overlapObjects.length; ++i)
+                {
+                    if(this.overlapObjects[i].type === "deadBlockPiece")
+                    {
+                        console.log("Game Over!");
+                    }
+                }
+            }
+        });
 
     reindexLineCheckers()
     {
@@ -130,7 +144,7 @@ class GameGrid extends GameFGObject
 
     constructor()
     {
-        super(blockGame, 40, 160, 400, 520,{
+        super(blockGame, 40, 40, 400, 640,{
             type:"gameGrid",
             drawFrame: function(){},
             updateFrame: function()
@@ -167,26 +181,15 @@ class GameGrid extends GameFGObject
                         }
                         prevBlock = blockInPlay;
                         prevBlock.remove();
-                        blockInPlay = CompoundBlock.generateNewBlock(prevBlock);
+                        blockInPlay = CompoundBlock.RegenBlock(nextBlock, 200, 40); 
+                        nextBlock = CompoundBlock.generateNewBlock(blockInPlay, 200, -100);
+
+                        //display next piece
+                        var nextBlockHTML = "";
+                        nextBlockHTML += "<h2>Next Piece</h2><br>"
+                        nextBlockHTML += "<img src=\"media/"+nextBlock.type+".png\">"
+                        document.getElementById("nextPiece").innerHTML = nextBlockHTML;
                     }
-                }
-                // F*** it! Let's run a check for all block pieces that are not the active block!!!!!!
-                for (let i = 0; i < blockGame.gameForegroundObjects.length; ++i)
-                {
-                    var localGameFGObject = blockGame.gameForegroundObjects[i]; // local make easy do...
-
-                    if(localGameFGObject.uniqueID !== blockInPlay.uniqueID &&
-                        (localGameFGObject.type === "LLBlock" ||
-                         localGameFGObject.type === "LRBlock" ||
-                         localGameFGObject.type === "TBlock" ||
-                         localGameFGObject.type === "LineBlock" ||
-                         localGameFGObject.type === "SquareBlock")
-                        )
-                        {
-                            //MAKE DEAD!!!!!!!
-                            localGameFGObject.remove();
-                        }
-
                 }
                 //check if any lines are complete
                 var clearedLines = []; //contains an array of lineCheckers that have complete lines
@@ -261,7 +264,7 @@ class CompoundBlock extends GameFGObject
     allBlocks = [];
     accelerated = false;
 
-    static generateNewBlock(lastBlock)
+    static generateNewBlock(lastBlock, x = 200, y = 40)
     {
         var lastBlockType = "";
         var temp = { type:"" };
@@ -276,19 +279,19 @@ class CompoundBlock extends GameFGObject
             switch(Math.floor(Math.random() * 5))
             {
                 case 0:
-                    temp = new LLBlock(blockGame, 200, 160, {color:"green"});
+                    temp = new LLBlock(blockGame, x, y, {color:"green"});
                     break;
                 case 1:
-                    temp = new LRBlock(blockGame, 200, 160, {color:"SaddleBrown"});
+                    temp = new LRBlock(blockGame, x, y, {color:"SaddleBrown"});
                     break;
                 case 2:
-                    temp = new TBlock(blockGame, 200, 160, {color:"yellow"});
+                    temp = new TBlock(blockGame, x, y, {color:"yellow"});
                     break;
                 case 3:
-                    temp = new LineBlock(blockGame, 200, 160, {color:"red"});
+                    temp = new LineBlock(blockGame, x, y, {color:"red"});
                     break;
                 case 4:
-                    temp = new SquareBlock(blockGame, 200, 160, {color:"orange"});
+                    temp = new SquareBlock(blockGame, x, y, {color:"orange"});
                     break;
             }
         }
@@ -731,8 +734,17 @@ class LineBlock extends CompoundBlock
 
 
 var blockInPlay = CompoundBlock.generateNewBlock();
+var nextBlock = CompoundBlock.generateNewBlock(null, 200, -100);
 var prevBlock = null;
 var tron = new GameGrid(); //you know... because it's "the grid"... lol
+
+//display next piece
+var nextBlockHTML = "";
+nextBlockHTML += "<h2>Next Piece</h2><br>"
+nextBlockHTML += "<img src=\"media/"+nextBlock.type+".png\">"
+document.getElementById("nextPiece").innerHTML = nextBlockHTML;
+
+//control event listeners
 window.addEventListener('keydown', function(e)
 {    
     if(e.key === "x") blockInPlay.rotateRight();
