@@ -18,6 +18,11 @@
 {
     box-sizing: border-box;
 }
+#score
+{
+    font-size: 1.25em;
+    font-family: outrunFuture;
+}
 
 nav ul li a:visited.current, nav ul li a:visited.current
 {

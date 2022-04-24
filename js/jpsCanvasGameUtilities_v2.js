@@ -327,8 +327,15 @@ function GameFGObject(Game, x, y, width, height, options = {})
     //pre-rendered graphics, text, etc.) this can be overridden to draw the frame in any way needed
     this.drawFrame = function(Game) //can be overridden for custom behavior
     {
+        //run pre draw method if it exists
+        if(this.preDrawFrame && typeof preDrawFrame === "function") this.preDrawFrame();
+
+        //default draw action
         Game.pen.fillStyle = this.color;
         Game.pen.fillRect(this.x, this.y, this.width, this.height);
+
+        //run post draw method if it exists
+        if(this.postDrawFrame && typeof postDrawFrame === "function") this.postDrawFrame();
     }
 
     //save this element's location in the foregroundObject array
@@ -407,12 +414,13 @@ function GameFGObject(Game, x, y, width, height, options = {})
             this.moveUp();
         }
     }
-
     //set optional parameters
     if(options.type) this.type = options.type;
     if(options.color) this.color = options.color;
     if(typeof options.updateFrame === "function") this.updateFrame = options.updateFrame;
     if(typeof options.drawFrame === "function") this.drawFrame = options.drawFrame;
+    if(typeof options.preDrawFrame === "function") this.preDrawFrame = options.preDrawFrame;
+    if(typeof options.postDrawFrame === "function") this.postDrawFrame = options.postDrawFrame;
 }
 
 Sprite = {

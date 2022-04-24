@@ -318,6 +318,7 @@ function restart(e)
             drawFrame: function(){return;}, //non-drawable object
             updateFrame: function()
             {
+                console.log("entityCount: " + SnakeGame.gameForegroundObjects.length)
                 //throw out expired cookies
                 for (let i = 0; i < this.contents.length; ++i)
                 {
@@ -364,7 +365,7 @@ function restart(e)
 
 document.getElementById("settings").addEventListener("submit", restart);
 
-document.addEventListener("keydown", function(e)
+window.addEventListener("keydown", function(e)
 {
     if(e.key == "ArrowUp")
     {
