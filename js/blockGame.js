@@ -1,31 +1,8 @@
-
-document.getElementById("score").innerText = "Score: 0";
-
-var blockGame = new CreateGameMaster("genericFallingBlockPuzzleGame");
-    blockGame.score = 0;
-    blockGame.celebrate = false;
-    blockGame.fallRate = 35;
-    blockGame.level = 1;
-var backgroundTexture = new GameBGObject(blockGame, 0, 0, blockGame.paper.width, blockGame.paper.height,
-    {
-        drawFrame: function()
-        {
-            this.sprite.render(blockGame, 0, 0);
-        }
-    });
-    backgroundTexture.sprite = new GameSprite("media/blockBack.png",480,720,1,1);
-var backgroundColorMask = new GameBGObject(blockGame, 0, 0, blockGame.paper.width, blockGame.paper.height,
-    {
-        color:"blue",
-        drawFrame: function()
-        {
-            this.GameObject.pen.globalAlpha = 0.5;
-            this.GameObject.pen.fillStyle = this.color;
-            this.GameObject.pen.fillRect(this.x, this.y, this.width, this.height);
-            this.GameObject.pen.globalAlpha = 1;
-        }
-    });
-blockGame.init();
+var blockGame;
+var prevBlock;
+var blockInPlay;
+var nextBlock;
+var tron;
 
 //One single piece of a T****s (Nin-10-Doe is VERY litigious) block
 class BlockPiece extends GameFGObject
@@ -35,8 +12,11 @@ class BlockPiece extends GameFGObject
     outOfFrame = false;
     moveTest = false;
     demo = false;
+    padding = 2;
+    backColor = "Black";
+    backPadding = 2;
 
-    constructor(game, x, y, options = {this:"blockPiece"})
+    constructor(game, x, y, options = {type:"blockPiece"})
     {
         options.drawFrame = function()
         {
@@ -44,9 +24,25 @@ class BlockPiece extends GameFGObject
             if(!this.visible || this.outOfFrame || this.moveTest) 
                 return;
 
+            //add special "locked in" effect to dead blocks (adds frame around shrunken block)
+            if(this.type === "deadBlockPiece")
+            {
+                this.GameObject.pen.fillStyle = this.backColor;
+                this.GameObject.pen.fillRect(this.x+this.backPadding, this.y+this.backPadding, this.width-(this.backPadding*2), this.height-(this.backPadding*2));
+            }
+
             //draw the block    
             this.GameObject.pen.fillStyle = this.color;
-            this.GameObject.pen.fillRect(this.x+3, this.y+3, this.width-3, this.height-3);
+            this.GameObject.pen.fillRect(this.x+this.padding, this.y+this.padding, this.width-(this.padding*2), this.height-(this.padding*2));
+            
+            //add special "locked in" effect to dead blocks (dims color)
+            if(this.type === "deadBlockPiece")
+            {
+                this.GameObject.pen.globalAlpha = 0.2;
+                this.GameObject.pen.fillStyle = "black";
+                this.GameObject.pen.fillRect(this.x+this.backPadding, this.y+this.backPadding, this.width-(this.backPadding*2), this.height-(this.backPadding*2));
+                this.GameObject.pen.globalAlpha = 1;
+            }
 
             if (typeof this.postDrawFrame === "function") this.postDrawFrame();
         }
@@ -73,6 +69,7 @@ class BlockPiece extends GameFGObject
         if(options.sprite) this.sprite = options.sprite;
         if(options.visible) this.visible = options.visible;
         if(options.moveTest) this.moveTest = options.moveTest;
+        if(options.padding) this.padding = options.padding;
     }
 }
 
@@ -123,7 +120,7 @@ class GameGrid extends GameFGObject
                 {
                     if(this.overlapObjects[i].type === "deadBlockPiece")
                     {
-                        console.log("Game Over!");
+                        GameOver();
                     }
                 }
             }
@@ -174,7 +171,8 @@ class GameGrid extends GameFGObject
 
                             this.gridBlocks.push(new BlockPiece(blockGame, block.x, block.y, 
                                 {
-                                    color:"black",
+                                    color:block.color,
+                                    padding:6,
                                     type:"deadBlockPiece",
                                     visible:true
                                 }));
@@ -732,19 +730,8 @@ class LineBlock extends CompoundBlock
     }    
 }
 
-
-var blockInPlay = CompoundBlock.generateNewBlock();
-var nextBlock = CompoundBlock.generateNewBlock(null, 200, -100);
-var prevBlock = null;
-var tron = new GameGrid(); //you know... because it's "the grid"... lol
-
-//display next piece
-var nextBlockHTML = "";
-nextBlockHTML += "<h2>Next Piece</h2><br>"
-nextBlockHTML += "<img src=\"media/"+nextBlock.type+".png\">"
-document.getElementById("nextPiece").innerHTML = nextBlockHTML;
-
 //control event listeners
+document.getElementById("start").addEventListener('click', Start);
 window.addEventListener('keydown', function(e)
 {    
     if(e.key === "x") blockInPlay.rotateRight();
@@ -776,3 +763,67 @@ window.addEventListener('keydown', function(e)
         blockInPlay.accelerated = true;
     }
 });
+
+function Start()
+{
+    $('#IDontHaveTheTimeForThis').removeClass('hidden');
+    $('#howPlay').addClass('hidden');
+
+    document.getElementById("score").innerText = "Score: 0";
+
+    blockGame = new CreateGameMaster("genericFallingBlockPuzzleGame");
+        blockGame.score = 0;
+        blockGame.celebrate = false;
+        blockGame.fallRate = 35;
+        blockGame.level = 1;
+    backgroundTexture = new GameBGObject(blockGame, 0, 0, blockGame.paper.width, blockGame.paper.height,
+        {
+            drawFrame: function()
+            {
+                this.sprite.render(blockGame, 0, 0);
+            }
+        });
+        backgroundTexture.sprite = new GameSprite("media/blockBack.png",480,720,1,1);
+    backgroundColorMask = new GameBGObject(blockGame, 0, 0, blockGame.paper.width, blockGame.paper.height,
+        {
+            color:"DarkSlateBlue",
+            drawFrame: function()
+            {
+                this.GameObject.pen.globalAlpha = 0.6;
+                this.GameObject.pen.fillStyle = this.color;
+                this.GameObject.pen.fillRect(this.x, this.y, this.width, this.height);
+                this.GameObject.pen.globalAlpha = 1;
+            }
+        });
+    blockGame.init();
+
+    blockInPlay = CompoundBlock.generateNewBlock();
+    nextBlock = CompoundBlock.generateNewBlock(null, 200, -100);
+    prevBlock = null;
+    tron = new GameGrid(); //you know... because it's "the grid"... lol
+    
+    //display next piece
+    var nextBlockHTML = "";
+    nextBlockHTML += "<h2>Next Piece</h2><br>"
+    nextBlockHTML += "<img src=\"media/"+nextBlock.type+".png\">"
+    document.getElementById("nextPiece").innerHTML = nextBlockHTML;
+}
+
+function GameOver()
+{
+    $('#IDontHaveTheTimeForThis').addClass('hidden');
+    $('#howPlay').removeClass('hidden');
+    window.clearInterval(blockGame.interval);
+    window.setTimeout(function()
+    {
+        blockGame.pen.font = "60px outrunFuture";
+        blockGame.pen.fillStyle = "DarkRed";
+        blockGame.pen.textAlign = "center";
+        blockGame.pen.fillText("Game Over", blockGame.paper.width/2, blockGame.paper.height/2);
+        blockGame.pen.fillStyle = "Black";
+        blockGame.pen.lineWidth = 3;
+        blockGame.pen.strokeText("Game Over", blockGame.paper.width/2, blockGame.paper.height/2);
+    }, 600);
+}
+
+$('#IDontHaveTheTimeForThis').addClass('hidden');

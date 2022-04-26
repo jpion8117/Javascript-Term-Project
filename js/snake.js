@@ -8,13 +8,14 @@ var snake;
 
 function restart(e)
 {
-    e.preventDefault();
+    $('#howPlayInstructions').addClass("hidden");
+    $('#scoreboard').removeClass("hidden");
 
     SnakeGame = new CreateGameMaster("nokiaEmulator9001");
     SnakeGame.timeTracker = START_TIME.getSeconds();
     SnakeGame.frameTracker = SnakeGame.framesCount;
     SnakeGame.actualFramerate = 0;
-    SnakeGame.showFramerate = true;
+    SnakeGame.showFramerate = false;
     SnakeGame.drawOverlay = function() 
     {
         var d = new Date();
@@ -25,13 +26,14 @@ function restart(e)
             this.frameTracker = this.framesCount;
         }
         let output = "";
-        if(this.showFramerate) output += "framerate: " + this.actualFramerate + "\n";
-        output += "score: " + snake.score;
+        if(this.showFramerate) output += "framerate: " + this.actualFramerate;
         
         this.pen.font = "30px computerPixel";
         this.pen.fillStyle = "white";
         this.pen.textAlign = "left";
         this.pen.fillText(output, 5, 30);
+
+        document.getElementById("score").innerText = snake.score;
 
         if(snake.levelUpOverlay)
         {
@@ -363,7 +365,7 @@ function restart(e)
     CookieJar.totalCookies = 3;
 }
 
-document.getElementById("settings").addEventListener("submit", restart);
+document.getElementById("start").addEventListener("click", restart);
 
 window.addEventListener("keydown", function(e)
 {
@@ -387,7 +389,8 @@ window.addEventListener("keydown", function(e)
 
 function gameOver()
 {
-    document.getElementById("nokiaEmulator9001").addEventListener("click", restart);
+    $('#howPlayInstructions').removeClass("hidden");
+    $('#scoreboard').addClass("hidden");
     window.clearInterval(SnakeGame.interval);
     window.setTimeout(function()
     {
